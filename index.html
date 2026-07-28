@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAHARA ELONGATED CITY — An Elon-gated Community</title>
+<style>
+  :root {
+    --sand: #e8c98a;
+    --sand-deep: #c99a4b;
+    --dune-shadow: #8a5a1e;
+    --night: #0d0a14;
+    --night-2: #1a1226;
+    --dusk: #ff7a3c;
+    --dusk-2: #ff4d6d;
+    --glacier: #9be7ff;
+    --glacier-deep: #3ab0d8;
+    --ink: #f5eede;
+    --muted: #b9a98c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .mono { font-family: 'Courier New', monospace; letter-spacing: 0.08em; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 4rem 1.5rem 14rem;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 100%, #4a1f4d 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 110%, var(--dusk) 0%, transparent 55%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 55%, #3d1e33 100%);
+  }
+  .hero .kicker {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    color: var(--dusk);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 9vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, var(--ink) 30%, var(--sand-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h1 .elongated {
+    display: block;
+    transform: scaleY(1.6);
+    transform-origin: center;
+    margin: 1.2rem 0;
+  }
+  .hero .tagline {
+    margin-top: 2.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-style: italic;
+    color: var(--muted);
+    max-width: 40rem;
+  }
+  .hero .subtag {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--dusk);
+  }
+  .dunes {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 12rem;
+    pointer-events: none;
+  }
+  .dunes svg { display: block; width: 100%; height: 100%; }
+  .scroll-hint {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dune-shadow);
+    animation: bob 2s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 6rem 1.5rem; position: relative; }
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  .section-num {
+    font-size: 0.75rem;
+    color: var(--dusk);
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+    line-height: 1.05;
+  }
+  .lede { font-size: 1.2rem; color: var(--ink); max-width: 44rem; margin-bottom: 1.2rem; }
+  p.body-text { color: var(--muted); max-width: 44rem; margin-bottom: 1.2rem; }
+  em.hot { color: var(--dusk); font-style: italic; }
+  em.cold { color: var(--glacier); font-style: italic; }
+
+  /* stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1px;
+    background: #2a2138;
+    border: 1px solid #2a2138;
+    margin: 3rem 0;
+  }
+  .stat {
+    background: var(--night);
+    padding: 1.8rem 1.5rem;
+  }
+  .stat .n {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--sand);
+    display: block;
+    line-height: 1.1;
+  }
+  .stat .l {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    display: block;
+  }
+  .stat .fine { font-size: 0.68rem; color: #6b5f4e; display: block; margin-top: 0.5rem; font-style: italic; }
+
+  /* cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .card {
+    border: 1px solid #2f2540;
+    padding: 2rem 1.6rem;
+    background: linear-gradient(160deg, var(--night-2), var(--night));
+  }
+  .card h3 {
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sand);
+    margin-bottom: 0.9rem;
+  }
+  .card p { font-size: 0.92rem; color: var(--muted); }
+  .card .icon { font-size: 1.8rem; display: block; margin-bottom: 1rem; }
+
+  /* gate section */
+  .gate-section {
+    background: linear-gradient(180deg, var(--night) 0%, #241531 50%, var(--night) 100%);
+  }
+  .gate-visual {
+    margin: 3rem auto;
+    max-width: 30rem;
+    text-align: center;
+    border: 2px solid var(--sand-deep);
+    padding: 3rem 2rem;
+    position: relative;
+  }
+  .gate-visual::before, .gate-visual::after {
+    content: "";
+    position: absolute;
+    top: -2px; bottom: -2px;
+    width: 30%;
+    border-top: 2px solid var(--dusk);
+    border-bottom: 2px solid var(--dusk);
+  }
+  .gate-visual::before { left: -2px; border-left: 2px solid var(--dusk); }
+  .gate-visual::after { right: -2px; border-right: 2px solid var(--dusk); }
+  .gate-visual .gate-word {
+    font-size: 1.4rem;
+    letter-spacing: 1.2em;
+    text-indent: 1.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+  .gate-visual .gate-sub { font-size: 0.8rem; color: var(--muted); margin-top: 1rem; font-style: italic; }
+
+  /* water section */
+  .water-section {
+    background:
+      radial-gradient(ellipse 100% 40% at 50% 0%, rgba(58, 176, 216, 0.12) 0%, transparent 60%),
+      var(--night);
+    border-top: 1px solid rgba(155, 231, 255, 0.15);
+  }
+  .water-section h2 { color: var(--glacier); }
+  .water-section .section-num { color: var(--glacier-deep); }
+  .plan-box {
+    border: 1px dashed var(--glacier-deep);
+    padding: 2rem;
+    margin: 2.5rem 0;
+    max-width: 44rem;
+  }
+  .plan-box .strike {
+    text-decoration: line-through;
+    color: #5e5470;
+  }
+  .plan-box .plan-final {
+    color: var(--glacier);
+    font-size: 1.3rem;
+    font-style: italic;
+    margin-top: 1rem;
+    display: block;
+  }
+  .plan-steps { list-style: none; margin-top: 2.5rem; counter-reset: step; max-width: 44rem; }
+  .plan-steps li {
+    counter-increment: step;
+    padding: 1.2rem 0 1.2rem 3.5rem;
+    position: relative;
+    border-bottom: 1px solid #1f1a2e;
+    color: var(--muted);
+  }
+  .plan-steps li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 1.2rem;
+    font-family: 'Courier New', monospace;
+    color: var(--glacier-deep);
+    font-size: 1.1rem;
+  }
+  .plan-steps li strong { color: var(--ink); }
+
+  .refill-banner {
+    margin: 2.5rem 0 3rem;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border: 2px solid var(--glacier-deep);
+    background:
+      radial-gradient(ellipse 80% 120% at 50% 0%, rgba(58,176,216,0.18) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(155,231,255,0.04), transparent);
+  }
+  .refill-banner .meme {
+    font-size: clamp(2rem, 8vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    color: var(--glacier);
+    text-shadow: 0 0 30px rgba(58,176,216,0.4);
+  }
+  .refill-banner .versus {
+    display: block;
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .refill-banner .versus s { color: #5e5470; }
+
+  /* FAQ */
+  details {
+    border-bottom: 1px solid #2f2540;
+    max-width: 44rem;
+  }
+  details summary {
+    cursor: pointer;
+    padding: 1.3rem 0;
+    font-size: 1.05rem;
+    color: var(--ink);
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+  }
+  details summary::after {
+    content: "+";
+    position: absolute;
+    right: 0.2rem;
+    color: var(--dusk);
+    font-size: 1.3rem;
+  }
+  details[open] summary::after { content: "–"; }
+  details .a { padding: 0 0 1.5rem; color: var(--muted); font-size: 0.95rem; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    background: linear-gradient(180deg, var(--night) 0%, #3d1e33 100%);
+    padding-bottom: 8rem;
+  }
+  .cta-btn {
+    display: inline-block;
+    margin-top: 2.5rem;
+    padding: 1.1rem 3rem;
+    border: 2px solid var(--dusk);
+    color: var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.85rem;
+    transition: all 0.25s ease;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .cta-btn:hover {
+    background: var(--dusk);
+    color: var(--night);
+    letter-spacing: 0.4em;
+  }
+  .cta-fine {
+    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    color: #6b5f4e;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #574c60;
+    border-top: 1px solid #1f1a2e;
+  }
+  footer a { color: var(--dune-shadow); }
+  .disclaimer {
+    max-width: 40rem;
+    margin: 1rem auto 0;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="kicker mono">Now pre-selling &middot; Phase 0 of &infin;</div>
+  <h1>
+    Sahara
+    <span class="elongated">Elongated</span>
+    City
+  </h1>
+  <p class="tagline">One city. The entire desert. From the northern edge of the Sahara to the southern edge of the Sahara — and every grain of sand in between.</p>
+  <p class="subtag mono">It's gated. It's by Elon. It's an Elon-gated community.</p>
+
+  <div class="dunes">
+    <svg viewBox="0 0 1440 190" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,120 C240,60 420,150 720,110 C1020,70 1200,160 1440,100 L1440,190 L0,190 Z" fill="#8a5a1e" opacity="0.5"/>
+      <path d="M0,150 C300,100 560,180 860,140 C1140,105 1300,175 1440,140 L1440,190 L0,190 Z" fill="#c99a4b" opacity="0.6"/>
+      <path d="M0,175 C360,140 700,195 1040,165 C1260,148 1380,180 1440,170 L1440,190 L0,190 Z" fill="#e8c98a"/>
+    </svg>
+  </div>
+  <div class="scroll-hint mono">▼ descend into the dunes ▼</div>
+</header>
+
+<!-- ============ THE VISION ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-num mono">01 / The Vision</div>
+    <h2>Why build a city in the desert when you can build a city that <em>is</em> the desert?</h2>
+    <p class="lede">Other cities have limits. City limits. We looked at the Sahara — 9.2 million square kilometres of prime, sun-drenched, absolutely unoccupied* sand — and asked the only question that matters:</p>
+    <p class="body-text"><em class="hot">"What if the whole thing was one enormously long city?"</em></p>
+    <p class="body-text">Sahara Elongated City stretches uninterrupted from the Mediterranean coast to the Sahel. North world of Sahara. South world of Sahara. One postcode. The longest city ever conceived, because it was conceived by someone who really likes things that are long.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">9,200,000</span>
+        <span class="l">km&sup2; of city</span>
+        <span class="fine">roughly the size of the Sahara, because it is the Sahara</span>
+      </div>
+      <div class="stat">
+        <span class="n">4,800 km</span>
+        <span class="l">longest boulevard</span>
+        <span class="fine">no left turns</span>
+      </div>
+      <div class="stat">
+        <span class="n">1</span>
+        <span class="l">gate</span>
+        <span class="fine">it's a really good gate</span>
+      </div>
+      <div class="stat">
+        <span class="n">0%</span>
+        <span class="l">humidity, crime&dagger;</span>
+        <span class="fine">&dagger;projected. crime requires neighbours; neighbours are in phase 12</span>
+      </div>
+    </div>
+    <p class="body-text" style="font-size:0.75rem; font-style:italic;">*Occupancy status disputed by approximately 2.5 million current Sahara residents. Our legal team describes them as "early adopters."</p>
+  </div>
+</section>
+
+<!-- ============ THE GATE ============ -->
+<section class="gate-section">
+  <div class="wrap">
+    <div class="section-num mono">02 / The Gate</div>
+    <h2>Elongated. And Elon-gated.</h2>
+    <p class="lede">Every great gated community needs a gate. Ours is the only gate visible from orbit — which is convenient, because that's where the spaceships are going.</p>
+    <p class="body-text">Security is absolute. The perimeter is 12,000 kilometres of nothing, patrolled by heat, thirst, and a subscription-based fence. Residents enter via the Gate. Everyone else enters via the waitlist.</p>
+
+    <div class="gate-visual">
+      <div class="gate-word">The Gate</div>
+      <div class="gate-sub">artist's impression &middot; actual gate may be longer</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🏜️</span>
+        <h3>Total Privacy</h3>
+        <p>Your nearest neighbour is, on average, 340 kilometres away. Borrow a cup of sugar. We dare you.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🔑</span>
+        <h3>Members Only</h3>
+        <p>Entry requires biometric scan, proof of vibes, and a founding deposit. The desert has always been exclusive — we just added paperwork.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📏</span>
+        <h3>Aggressively Long</h3>
+        <p>The city has one dimension and we committed to it. Width is a legacy concept. Everything here is elongated: the streets, the gate, the founder's vision, the wait times.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAND TO STARSHIPS ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-num mono">03 / The Sand</div>
+    <h2>Every grain of sand is a spaceship that hasn't been born yet</h2>
+    <p class="lede">The Sahara contains an estimated 1.5 septillion grains of sand. Legacy civilisations saw a wasteland. We see <em class="hot">inventory</em>.</p>
+    <p class="body-text">Sand is silicon. Silicon is chips. Chips are robots. Robots build factories. Factories build spaceships. Spaceships build more factories. You see where this is going: <strong>up</strong>.</p>
+    <p class="body-text">The entire surface area of the desert will be repurposed as a single, continuous, self-replicating spaceship foundry. Each spaceship we launch carries the blueprint to build the next one. We call this program <em class="hot">Dune &amp; Done</em>.</p>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">⏳</span>
+        <h3>Step 1: Sand</h3>
+        <p>Already there. Honestly the hardest part was done for us by 7 million years of wind. Thanks, wind.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🏭</span>
+        <h3>Step 2: Foundries</h3>
+        <p>Solar-smelted silicon megafabs every 100 km along the boulevard. The desert gets 3,600 hours of sunshine a year and has literally nothing else planned.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🚀</span>
+        <h3>Step 3: Replicate</h3>
+        <p>Ships that build ships that build ships. Exponential. By Phase 9 we will be legally required to stop, and we will think about it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE MACHINE ============ -->
+<section class="gate-section">
+  <div class="wrap">
+    <div class="section-num mono">04 / The Machine</div>
+    <h2>One machine. One home. Per day.</h2>
+    <p class="lede">Somewhere in the dunes, The Machine is working. It harvests sand at the front, and a finished home comes out the back. It does this once per day. It does not do it twice per day. We asked.</p>
+    <p class="body-text">The Machine sinters raw Saharan sand into elegant, load-bearing, sand-coloured homes — printed in place, move-in ready, pre-heated by default. No supply chain, no concrete, no lumber, no imports. The building material is the address.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">1</span>
+        <span class="l">home per day</span>
+        <span class="fine">The Machine rests at night. It has earned it.</span>
+      </div>
+      <div class="stat">
+        <span class="n">365</span>
+        <span class="l">homes per year</span>
+        <span class="fine">366 in leap years. huge if true</span>
+      </div>
+      <div class="stat">
+        <span class="n">25,205</span>
+        <span class="l">years to house 9.2M residents</span>
+        <span class="fine">the waitlist was never a metaphor</span>
+      </div>
+      <div class="stat">
+        <span class="n">0</span>
+        <span class="l">bricks imported</span>
+        <span class="fine">the desert IS the brick</span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🖨️</span>
+        <h3>Print In Place</h3>
+        <p>The Machine crawls the boulevard, extruding one home per day directly onto your plot. Delivery radius: wherever The Machine happens to be. You don't choose the location. The Machine chooses.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🏠</span>
+        <h3>Artisanal Scarcity</h3>
+        <p>One per day isn't a limitation — it's a drop. Each home is numbered, minted, and identical to every other home. Home #1 recently resold for eleven homes.</p>
+      </div>
+      <div class="card">
+        <span class="icon">⚙️</span>
+        <h3>The Obvious Question</h3>
+        <p>"Why not build a second Machine?" The Machine that builds Machines is scheduled right after the spaceships that build spaceships. Priorities. Rockets first, roofs later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE WATER PLAN ============ -->
+<section class="water-section">
+  <div class="wrap">
+    <div class="section-num mono">05 / The Water</div>
+    <h2>We will restore the aquifers.</h2>
+    <p class="lede">Yes, the ancient aquifers under the Sahara. The ones that took 20,000 years to fill. We're going to top them up. Here's the plan, which we workshopped extensively:</p>
+
+    <div class="refill-banner">
+      <div class="meme">Refill,<br>baby,<br>refill.</div>
+      <span class="versus">The last century said <s>"drill, baby, drill"</s> and pumped the ground dry. We took the same rigs, the same crews, the same chant — and reversed exactly one word. Meltwater goes <em class="cold">down</em>. The aquifer comes back.</span>
+    </div>
+
+    <div class="plan-box">
+      <p class="strike">Plan A: Cure the salty sea. Take the ocean, remove the salt, pour it in. (Desalination at septillion-grain scale. Too obvious. Everyone's doing it.)</p>
+      <span class="plan-final">Plan B: Fresh. Fresh, fresh, <em>fresh</em> melting glaciers will replenish the aquifers. That's the plan.</span>
+    </div>
+
+    <ol class="plan-steps">
+      <li><strong>The glaciers are already melting.</strong> This is the part of the plan that is going extremely well, ahead of schedule, with zero effort on our part.</li>
+      <li><strong>Melting glaciers are fresh water.</strong> Pre-desalinated by nature. The salt never got in. Nature's filtration, zero moving parts.</li>
+      <li><strong>Freshwater goes into the aquifers.</strong> Logistics team is confident. The water is in the north; the aquifers are underneath. Down is a direction water famously loves.</li>
+      <li><strong>Aquifers: restored.</strong> The Sahara was green 6,000 years ago. We're simply rolling back to a previous version. Ctrl+Z for a continent.</li>
+    </ol>
+
+    <p class="body-text" style="margin-top:2.5rem;">Critics ask: <em class="cold">"Isn't relying on melting glaciers a bad sign?"</em> We prefer to think of the cryosphere as a scheduled delivery. The planet is defrosting the fridge, and we brought a bucket.</p>
+
+    <h2 style="margin-top:4rem; font-size:clamp(1.4rem,3.5vw,2.2rem);">The oil &amp; gas industry has a new job.</h2>
+    <p class="body-text">Here is the beautiful part. There already exists an industry with a century of experience in pumping enormous quantities of liquid across deserts, oceans, and continents. Wrong liquid. Wrong direction. Otherwise flawless. We are simply <em class="cold">rehiring the entire sector and flipping the arrows</em>.</p>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🛢️</span>
+        <h3>Pipelines, Reversed</h3>
+        <p>Millions of kilometres of pipeline already cross the planet, expertly welded by people who were told it was for something else. Meltwater in, aquifer out. The infrastructure doesn't care what flows through it. Neither, historically, did the industry.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🚢</span>
+        <h3>Tankers, Repurposed</h3>
+        <p>A supertanker holds 2 million barrels. It genuinely does not mind whether that's crude or fresh glacier melt — one of them even rinses the tank on the way. Greenland to the Gate, round trips, forever. Or at least until the ice runs out, which — see step 4.</p>
+      </div>
+      <div class="card">
+        <span class="icon">⛏️</span>
+        <h3>Refill, Baby, Refill</h3>
+        <p>The chant stays; the direction flips. Crews keep their rigs, their hard hats, and their enormous salaries — the only change order is to put the liquid <em>back</em>. Injection wells straight into the aquifer. Same skill, opposite sin.</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(18rem,1fr)); gap:1.4rem; margin-top:3rem;">
+      <a href="qattara.html" style="display:block; border:2px solid var(--glacier-deep); padding:2rem 1.8rem; text-decoration:none; background:linear-gradient(160deg, rgba(46,123,176,0.12), transparent);">
+        <span class="mono" style="font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--glacier-deep);">Sister project &rarr;</span>
+        <span style="display:block; font-size:clamp(1.2rem,3vw,1.7rem); font-weight:900; text-transform:uppercase; color:var(--glacier); margin-top:0.8rem; line-height:1.1;">The Qattara Depression Project</span>
+        <span style="display:block; color:var(--muted); margin-top:0.7rem;">A real hole in Egypt, 133m below the sea. Flood it, it makes power forever. With hydro. With a boring company. With nukes, or — we checked — <em class="cold">without.</em> But first: we demine.</span>
+      </a>
+      <a href="lake-chad.html" style="display:block; border:2px solid #2f9e5f; padding:2rem 1.8rem; text-decoration:none; background:linear-gradient(160deg, rgba(47,158,95,0.12), transparent);">
+        <span class="mono" style="font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; color:#2f9e5f;">Sister project &rarr;</span>
+        <span style="display:block; font-size:clamp(1.2rem,3vw,1.7rem); font-weight:900; text-transform:uppercase; color:#7fe0a3; margin-top:0.8rem; line-height:1.1;">The Lake Chad Refill</span>
+        <span style="display:block; color:var(--muted); margin-top:0.7rem;">Thirty million people live around a lake that's ~90% gone. There's a real plan to refill it — borrow a sliver of the Congo and send it north. The least funny, most important page here.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE CALENDAR ============ -->
+<section class="gate-section">
+  <div class="wrap">
+    <div class="section-num mono">06 / The Calendar</div>
+    <h2>13 months. 28 days each. No kidding. Serious business.</h2>
+    <p class="lede">Sahara Elongated City does not observe your calendar. We operate a parallel system: <em class="hot">13 months of exactly 28 days</em>, aligned with the Moon, which has been keeping perfect time for 4.5 billion years without a software update.</p>
+    <p class="body-text">Every month is identical. Every month starts on Sunday. The 1st is always a Sunday, the 15th is always a Sunday, payday is always the 28th, and rent is always your problem. If you know today's date, you know the weekday — forever. Meetings can no longer be "lost track of." We apologise for what this does to your excuses.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">13 &times; 28</span>
+        <span class="l">= 364 days</span>
+        <span class="fine">every month identical. every quarter identical. accountants weep with joy</span>
+      </div>
+      <div class="stat">
+        <span class="n">+1</span>
+        <span class="l">Year Day</span>
+        <span class="fine">day 365 belongs to no month, no week, no obligations. mandatory city-wide holiday in the dunes</span>
+      </div>
+      <div class="stat">
+        <span class="n">13th</span>
+        <span class="l">month: "Sol"</span>
+        <span class="fine">inserted between June and July. named after the sun, which we have plenty of</span>
+      </div>
+      <div class="stat">
+        <span class="n">13</span>
+        <span class="l">Friday the 13ths per year</span>
+        <span class="fine">every month has one. we consider fear of this a legacy emotion</span>
+      </div>
+    </div>
+
+    <p class="body-text">Sceptics call this madness. Historians call it the <strong>International Fixed Calendar</strong> — a real proposal from 1902, and Kodak genuinely ran its entire company on it until 1989. If it's good enough for the people who invented the photograph of your grandparents, it's good enough for a city-state made of sand.</p>
+    <p class="body-text">The Machine prints one home per day. Under our calendar, that is <em class="hot">exactly 28 homes per month, every month, no exceptions</em>. For the first time in history, a construction schedule and reality are the same document. On Year Day, The Machine prints nothing, and we all watch it rest.</p>
+  </div>
+</section>
+
+<!-- ============ THE LANGUAGE ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-num mono">07 / The Language</div>
+    <h2>La oficiala lingvo estas Esperanto.</h2>
+    <p class="lede">A parallel calendar deserves a parallel language. The official tongue of Sahara Elongated City is <em class="hot">Esperanto</em> — the neutral, constructed language nobody's government owns and everybody's grandmother almost learned.</p>
+    <p class="body-text">A city with residents from every nation needs a language that belongs to none of them. Esperanto was designed in 1887 by an eye doctor, so that humanity could finally see eye to eye. The word itself means <em class="hot">"one who hopes."</em> We are a city built on sand, hope, and one very good gate. It fits.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">16</span>
+        <span class="l">grammar rules. total.</span>
+        <span class="fine">English has more exceptions than Esperanto has rules</span>
+      </div>
+      <div class="stat">
+        <span class="n">0</span>
+        <span class="l">irregular verbs</span>
+        <span class="fine">matching our calendar: no exceptions, anywhere, ever</span>
+      </div>
+      <div class="stat">
+        <span class="n">1887</span>
+        <span class="l">year of release</span>
+        <span class="fine">still in beta. still ahead of its time</span>
+      </div>
+      <div class="stat">
+        <span class="n">~2M</span>
+        <span class="l">speakers worldwide</span>
+        <span class="fine">soon: 2M + one entire desert</span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🗣️</span>
+        <h3>Learnable In Sol</h3>
+        <p>Studies suggest Esperanto is learnable up to 10&times; faster than national languages. We give new residents one month. Conveniently, we invented an extra one.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📖</span>
+        <h3>Official Vocabulary</h3>
+        <p>La Pordego — The Gate. La Maŝino — The Machine. La Jartago — Year Day. La Longega Urbo — The Extremely Long City. You already speak it. Feel that? That's 16 rules working.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🎬</span>
+        <h3>Prestigious Cinema</h3>
+        <p>In 1966, William Shatner starred in a horror film performed entirely in Esperanto. This is a real fact, and it screens every Year Day at the Gate. Attendance is encouraged. The film is not.</p>
+      </div>
+    </div>
+
+    <p class="body-text" style="margin-top:2.5rem;"><em class="hot">"Unu urbo. Unu lingvo. Unu pordego."</em> — One city. One language. One gate. The city motto took four minutes to translate, because Esperanto works and meetings here end on time.</p>
+  </div>
+</section>
+
+<!-- ============ THE ZONE ============ -->
+<section class="gate-section">
+  <div class="wrap">
+    <div class="section-num mono">08 / The Zone</div>
+    <h2>Sahara Special Economic Zone: your country, but in our desert</h2>
+    <p class="lede">Inside the SSEZ, we sell land for cheap — <em class="hot">to entire countries</em>. Establish your national enclave inside the city. Bring your flag, your cuisine, your music, your grandmothers' recipes. <em class="hot">Bring karma and vibes.</em> Leave your weather and your tax code at the border; you won't need either.</p>
+    <p class="body-text">Taxes here are paid in <em class="hot">Vibes and Karma</em>. That's the whole tax code — two words, both good ones. The city handles the boring central numbers; your enclave's annual contribution is assessed in culture, generosity, and good energy, audited on Year Day by the <strong>Ministry of Vibes</strong>. A great festival is deductible. Kindness compounds. A mediocre year is a filing error. Two hundred cuisines on one boulevard isn't a tax base — it's the point of the whole city.</p>
+    <p class="body-text">The Ministry deploys <strong>Vibe Controllers</strong> — via-via inspectors who move enclave to enclave, sampling the atmosphere and issuing assessments. Each Controller is fully insured, in Vibes, against a bad mood. The insurance pool is pristine — pristine, for-share, <em class="hot">ultrafine</em> — held in common and paid out in festivals. When a Controller's vibes run low, the city tops them up. Karma, it turns out, is the only reserve currency that appreciates when you spend it.</p>
+
+    <div style="border:2px solid var(--sand-deep); margin:3rem 0 1rem; padding:2.5rem 2rem; background:linear-gradient(160deg, rgba(232,201,138,0.06), transparent); text-align:center;">
+      <div class="mono" style="font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--sand-deep);">From the Ministry's pharmaceutical division</div>
+      <div style="font-size:clamp(2.2rem,7vw,4rem); font-weight:900; text-transform:uppercase; letter-spacing:0.05em; margin-top:1rem; color:var(--sand);">Vibex<span style="font-size:0.4em; vertical-align:super;">®</span></div>
+      <div style="font-style:italic; color:var(--ink); font-size:1.15rem; margin-top:0.8rem;">"Vibes good must be."</div>
+      <p style="color:var(--muted); max-width:38rem; margin:1.5rem auto 0; font-size:0.95rem;">Do you suffer from chronically mid vibes? Flat karma? Do festivals feel like meetings? Ask your Vibe Controller if <strong style="color:var(--sand);">Vibex®</strong> is right for you. One dose restores baseline vibes within a single sunset. Active ingredient: compressed festival extract, 200&nbsp;mg, harvested on Year Day at peak communal joy and cold-pressed by the Ministry itself.</p>
+      <p style="color:var(--muted); max-width:38rem; margin:1.2rem auto 0; font-size:0.95rem;">Available free at every enclave gate, because charging money for vibes would be a vibe violation, and the Ministry audits itself first.</p>
+      <p class="mono" style="color:#6b5f4e; max-width:40rem; margin:1.8rem auto 0; font-size:0.62rem; line-height:1.7; text-align:left;">SIDE EFFECTS MAY INCLUDE: spontaneous festivals, involuntary generosity, humming in Esperanto, dancing at bus stops that have not been built yet, forgiving your neighbour 340&nbsp;km away, elevated karma readings, the sudden urge to plant mangroves, and in rare cases reading an entire brochure to the end. Vibex® is habit-forming only in the sense that kindness is. Do not take Vibex® if your vibes are already immaculate, as overdose may result in founding a second city. Not evaluated by any authority the old calendar recognises. Vibex® is a fictional satirical product; it does not exist, treats nothing, and is not medical advice — if your actual vibes are heavy, talk to a real human or a real doctor. That part is serious.</p>
+    </div>
+    <p class="body-text">Every nation gets the chance to own a piece of the longest city on Earth. Sinking island states can relocate above sea level, permanently — we have never been at sea level and never will be. Landlocked countries can finally have a coastline (Phase 47, pending glacier arithmetic). It's an embassy district the size of a continent, and everyone is invited to buy in early, before their neighbours do. Especially before their neighbours do.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">195+</span>
+        <span class="l">enclave plots surveyed</span>
+        <span class="fine">one per country, plus spares for the countries that don't exist yet</span>
+      </div>
+      <div class="stat">
+        <span class="n">$1</span>
+        <span class="l">per km&sup2;, year one</span>
+        <span class="fine">year two pricing available upon signature of year one</span>
+      </div>
+      <div class="stat">
+        <span class="n">Vibes<br>+ Karma</span>
+        <span class="l">the entire tax code</span>
+        <span class="fine">assessed by the Ministry of Vibes. arrears settled in festivals</span>
+      </div>
+      <div class="stat">
+        <span class="n">100%</span>
+        <span class="l">above sea level</span>
+        <span class="fine">guaranteed. we checked. it's the one thing the Sahara is famous for delivering</span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🏝️</span>
+        <h3>Sinking? Move In.</h3>
+        <p>Losing coastline to the very glaciers we're pumping into our aquifers? Poetic. Buy your nation's footprint back by the kilometre — same shape, new sand, zero tides.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🏛️</span>
+        <h3>Sovereignty Lite&trade;</h3>
+        <p>Your enclave keeps its laws, language, and anthem inside its borders. Outside them: the Calendar, the Language, and the Gate. Diplomatic incidents are scheduled on Year Day, when nothing counts.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📉</span>
+        <h3>Cheap. For Now.</h3>
+        <p>The land is cheap because it's sand. The sand is valuable because it's spaceships. We are legally required to mention we know both of these facts, and priced it anyway. Early nations eat first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE LAGOONS ============ -->
+<section class="water-section">
+  <div class="wrap">
+    <div class="section-num mono">09 / The Lagoons</div>
+    <h2>The excess sand goes to sea. On purpose. To build life.</h2>
+    <p class="lede">The Machine prints homes. The foundries print spaceships. But a desert this large produces more sand than even we can launch — so the surplus gets a second career: <em class="cold">we build lagoons with it, out in international waters, and we plant them.</em></p>
+    <p class="body-text">Barged offshore and shaped into sheltered atolls, the excess sand becomes the foundation for brand-new coastal ecosystems — warm, shallow lagoons seeded with seagrass, coral nurseries, and fish. Land that was nowhere becomes somewhere. It's terraforming, except the planet we're forming is this one.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="n">4&times;</span>
+        <span class="l">carbon vs. rainforest</span>
+        <span class="fine">mangroves bury "blue carbon" in the mud for millennia. this part is real</span>
+      </div>
+      <div class="stat">
+        <span class="n">66%</span>
+        <span class="l">wave energy absorbed</span>
+        <span class="fine">by ~100m of mangrove belt. real number. erosion, cancelled at the root</span>
+      </div>
+      <div class="stat">
+        <span class="n">1,000s</span>
+        <span class="l">of species per lagoon</span>
+        <span class="fine">nurseries for fish that feed coasts we'll never charge rent to</span>
+      </div>
+      <div class="stat">
+        <span class="n">+ net land</span>
+        <span class="l">on a shrinking map</span>
+        <span class="fine">sinking nations lose coastline; we grow it back somewhere warmer</span>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="icon">🌊</span>
+        <h3>Sand → Atoll</h3>
+        <p>Surplus Saharan sand, dredged and placed into engineered shallows in the open ocean. A ring of new seabed in water that was too deep for anything to live. Foundations first — the ocean supplies the rest.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🌱</span>
+        <h3>Mangrove Technology</h3>
+        <p>We plant the edges with mangroves — nature's seawall. Their roots trap sediment, break waves, and grow the shoreline outward instead of losing it. The more storms hit, the more land they build. Anti-fragile coastline, from a tree.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🐠</span>
+        <h3>New Ecosystems</h3>
+        <p>Seagrass meadows, coral nurseries, nesting birds, spawning fish. A living lagoon within a decade. We don't own the fish. We don't tax the fish. The fish are the one part of this project with genuinely no strings attached.</p>
+      </div>
+    </div>
+
+    <p class="body-text" style="margin-top:2.5rem;">Here's the honest part, and we'll say it plainly: <em class="cold">most of this section is real science.</em> Mangroves really are the best coastal carbon-and-erosion technology on Earth, and moving material to build habitat really works. Take away the gate, the spaceships and the Ministry of Vibes, and what's left underneath is a genuinely good idea. That was always the trick — bury a real plan inside a ridiculous brochure, and see who reads to the end.</p>
+  </div>
+</section>
+
+<!-- ============ THE ASK ============ -->
+<section class="water-section">
+  <div class="wrap">
+    <div class="section-num mono">10 / The Ask</div>
+    <span style="display:inline-block; font-family:'Courier New',monospace; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--night); background:var(--glacier); padding:0.2rem 0.6rem; margin-bottom:1.2rem;">Real &middot; Y Combinator asked for this</span>
+    <h2 style="color:var(--glacier);">Y Combinator literally requested this startup.</h2>
+    <p class="lede">We didn't invent "flood the Sahara" for a joke. <strong>Y Combinator</strong> — the startup accelerator behind Airbnb, Stripe, and Dropbox — published a <em class="cold">Request for Startups</em> called <strong>Desert Flooding</strong>, as part of their carbon-removal program. Contributors include <strong>Sam Altman</strong> and ocean-carbon scientist <strong>Greg Rau</strong>. It is real. You can look it up. We'll wait.</p>
+
+    <div class="plan-box" style="border-style:solid; border-color:var(--glacier-deep);">
+      <p class="body-text" style="color:var(--ink); margin-bottom:0.8rem;">The pitch, roughly in YC's own terms:</p>
+      <p class="body-text" style="margin-bottom:0;">Flood the desert to create <em class="cold">millions of 1&nbsp;km² oases</em> — shallow ~2&nbsp;m reservoirs — and seed them with <em class="cold">phytoplankton</em> that pull carbon out of the air, while creating newly habitable land. To sequester ~<strong>41 gigatons of CO₂ a year</strong> — slightly more than humanity emits — you'd flood roughly <strong>half the Sahara</strong>: about <strong>9 trillion m³ of water</strong>.</p>
+    </div>
+
+    <h2 style="color:var(--glacier); font-size:clamp(1.6rem,4.5vw,2.6rem); margin-top:1rem;">We do all of the above.</h2>
+    <p class="body-text">Most answers to that RFS would pick one mechanism. The Elongated City's entire premise is that you don't choose — you stack every source of water and every use of it into one continent-scale system. Here's the full checklist, and every item on it is a real, documented technique:</p>
+
+    <div class="stats" style="grid-template-columns:1fr;">
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">Recharge the aquifers</strong> — managed aquifer recharge, "refill baby refill." <span style="color:#6b5f4e; font-style:italic;">→ The Water</span></span>
+      </div>
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">Flood the Qattara Depression</strong> — sub-sea-level basin, seawater hydro. <a href="qattara.html" style="color:var(--glacier);">→ Qattara subpage</a></span>
+      </div>
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">Refill Lake Chad</strong> — the Transaqua interbasin transfer for 30M people. <a href="lake-chad.html" style="color:var(--glacier);">→ Lake Chad subpage</a></span>
+      </div>
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">Build coastal lagoons &amp; mangroves</strong> — blue carbon, erosion control. <span style="color:#6b5f4e; font-style:italic;">→ The Lagoons</span></span>
+      </div>
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">The phytoplankton oases</strong> — YC's own mechanism: 1&nbsp;km² reservoirs sequestering carbon. <span style="color:#6b5f4e; font-style:italic;">→ this section</span></span>
+      </div>
+      <div class="stat" style="display:flex; gap:1rem; align-items:baseline;">
+        <span style="color:var(--glacier); font-size:1.3rem;">✓</span>
+        <span><strong style="color:var(--ink);">Desert solar</strong> — powering every pump, tunnel, and foundry above. <span style="color:#6b5f4e; font-style:italic;">→ The Sand</span></span>
+      </div>
+    </div>
+
+    <p class="body-text">Sold by the linear kilometre. Measured in the square kilometre. YC wanted millions of 1&nbsp;km² oases — the Elongated City is the parcel map that delivers them, wrapped in a gate, a calendar, a language, and a Ministry of Vibes so that anyone actually reads the RFS.</p>
+    <p class="body-text" style="font-size:0.8rem; font-style:italic; color:#6b5f4e;">Source: Y Combinator Request for Startups — "Desert Flooding," carbon.ycombinator.com/desert-flooding. Contributed by Gabriel Lopez, Zack Abbott, Greg Rau, Leonid Kozhunk, and Sam Altman. The numbers above are theirs, not ours.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-num mono">11 / FAQ</div>
+    <h2>Frequently Anticipated Questions</h2>
+
+    <details>
+      <summary>Is this a real city?</summary>
+      <div class="a">It is as real as the brochure you are currently reading, which is very real, you can touch your screen right now and feel it.</div>
+    </details>
+    <details>
+      <summary>Why "Elongated"?</summary>
+      <div class="a">Because it is gated, and it is by Elon. Elon-gated. It is also 4,800 km long, which our branding department describes as "a happy coincidence" and our geometry department describes as "a cry for help."</div>
+    </details>
+    <details>
+      <summary>What about the people who already live in the Sahara?</summary>
+      <div class="a">Founding residents with heritage status! They receive lifetime membership, a commemorative grain of sand, and absolutely no say in anything, consistent with our governance model ("one man, one vote — he is the man, it is his vote").</div>
+    </details>
+    <details>
+      <summary>Won't the spaceship foundries use all the sand?</summary>
+      <div class="a">The Sahara gains sand through desertification faster than we can launch it into space. For the first time in history, climate catastrophe is a supply chain advantage. We are the only real-estate project that is literally growing.</div>
+    </details>
+    <details>
+      <summary>What if the glaciers finish melting?</summary>
+      <div class="a">Then the aquifers are full, obviously. Please read the plan again. There are four steps. It rhymes.</div>
+    </details>
+    <details>
+      <summary>Is "flood the Sahara" a real thing anyone serious proposed?</summary>
+      <div class="a">Yes — Y Combinator published a Request for Startups called "Desert Flooding," contributed to by Sam Altman among others, proposing millions of 1&nbsp;km² desert oases seeded with phytoplankton to sequester carbon. The whole brochure is our answer to it: instead of one mechanism, we do all of them. The gate and the Ministry of Vibes are the spoonful of sugar. The water is the medicine.</div>
+    </details>
+    <details>
+      <summary>Wait — is the lagoon part actually real?</summary>
+      <div class="a">Yes. That's the twist. Mangrove restoration and offshore habitat-building are real, funded, working climate tools right now — blue carbon, wave attenuation, fisheries recovery, all documented. Everything around it in this brochure is a joke. That one section is the reason the joke is worth telling. If a ridiculous website is what gets someone to look up "mangrove blue carbon," the whole Elon-gated city did its job.</div>
+    </details>
+    <details>
+      <summary>My country is sinking. Can we move in?</summary>
+      <div class="a">Yes, and quickly — SSEZ plots are allocated first-come, first-dry. Your new enclave comes pre-elevated at 400 metres above a sea that is, thanks to the glacier program, both rising and being drained into our basement at the same time. Equilibrium is somebody's problem, and we are proud to say it is not ours.</div>
+    </details>
+    <details>
+      <summary>Do I have to learn Esperanto?</summary>
+      <div class="a">Jes.</div>
+    </details>
+    <details>
+      <summary>What happens to my birthday?</summary>
+      <div class="a">Converted automatically. If you were born on the 29th, 30th or 31st of anything, your birthday is now in Sol, and you share it with everyone else the old calendar failed. It is the biggest party of the year. You're welcome.</div>
+    </details>
+    <details>
+      <summary>When will my home be printed?</summary>
+      <div class="a">The Machine prints homes in strict waitlist order. You are welcome to consult your queue position, divide by 365, and sit down for a moment. Remember: your great-great-(&times;900)-grandchildren will thank you for locking in today's prices.</div>
+    </details>
+    <details>
+      <summary>Can I leave?</summary>
+      <div class="a">The gate opens from the inside on Tuesdays.</div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ THE CREDO ============ -->
+<section style="min-height:90vh; display:flex; align-items:center; justify-content:center; text-align:center; background:radial-gradient(ellipse 80% 60% at 50% 50%, #241531 0%, var(--night) 75%);">
+  <div class="wrap">
+    <div class="section-num mono" style="margin-bottom:3rem;">The Credo</div>
+    <div style="font-size:clamp(1.5rem,4.5vw,3rem); font-weight:900; line-height:1.5; text-transform:uppercase; letter-spacing:0.02em;">
+      <div style="color:var(--ink);">This sounds crazy</div>
+      <div style="color:var(--dusk);">but it isn't.</div>
+      <div style="color:var(--ink); margin-top:1.5rem;">This could have happened —</div>
+      <div style="color:var(--sand);">one way or another.</div>
+      <div style="margin-top:1.5rem; color:var(--glacier);">Expanding the imagination.</div>
+      <div style="color:var(--glacier);">Pushing the limits.</div>
+    </div>
+    <p style="margin-top:3.5rem; color:var(--muted); font-style:italic; max-width:38rem; margin-left:auto; margin-right:auto;">Every serious thing on this site was once somebody's ridiculous brochure. The canal was proposed in 1912. The calendar ran a company for sixty years. The accelerator asked for the flood in writing. The distance between a joke and a plan is somebody deciding to read it twice.</p>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="wrap">
+    <div class="section-num mono">12 / Join</div>
+    <h2>The desert is filling up.<br>With ambition.</h2>
+    <p class="lede" style="margin-left:auto; margin-right:auto;">Reserve your kilometre today. Plots are sold by the linear kilometre, because area is for cities with two dimensions.</p>
+    <button class="cta-btn mono" onclick="this.textContent='POSITION IN QUEUE: 1,500,000,000,000,000,000,000,000'; this.style.letterSpacing='0.05em'; this.style.fontSize='0.6rem';">Join the Waitlist</button>
+    <p class="cta-fine">Deposits are non-refundable, non-transferable, and non-existent until our payments provider returns our calls. Waitlist position determined by vibes and settled in sand.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="mono">SAHARA ELONGATED CITY — a Marsita the Ultra production</div>
+  <div class="disclaimer">This is satire. No deserts were purchased in the making of this brochure. The glaciers, regrettably, are actually melting — that part isn't a joke, which is sort of the point. Not affiliated with any billionaire, living, dead, or on Mars.</div>
+</footer>
+
+</body>
+</html>
